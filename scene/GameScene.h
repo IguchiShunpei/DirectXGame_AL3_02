@@ -10,6 +10,9 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "DebugCamera.h"
+#include "WinApp.h"
+#include "math.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -42,6 +45,8 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	float Rad(float x);
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -63,6 +68,9 @@ class GameScene {
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
+	float matRot;
+
+	const float M_PI = 3.141592f;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
