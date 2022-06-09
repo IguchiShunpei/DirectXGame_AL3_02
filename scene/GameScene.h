@@ -12,6 +12,7 @@
 #include "DebugCamera.h"
 #include "WinApp.h"
 #include "math.h"
+#include <random>
 
 
 /// <summary>
@@ -61,7 +62,7 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
+	WorldTransform worldTransforms_[100];
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -70,6 +71,9 @@ class GameScene {
 	DebugCamera* debugCamera_ = nullptr;
 
 	const float M_PI = 3.141592f;
+
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 
 	/// <summary>
 	/// ゲームシーン用
