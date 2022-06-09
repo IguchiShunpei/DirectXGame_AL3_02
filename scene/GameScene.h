@@ -45,6 +45,7 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	//ラジアン変換
 	float Rad(float x);
 
   private: // メンバ変数
@@ -68,9 +69,8 @@ class GameScene {
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
-	float matRot;
-
 	const float M_PI = 3.141592f;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
