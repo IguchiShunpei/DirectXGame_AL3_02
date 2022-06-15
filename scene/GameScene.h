@@ -12,12 +12,30 @@
 #include "DebugCamera.h"
 #include "WinApp.h"
 #include "math.h"
-
+#include "affin/affin.h"
+#include "MyFunc.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene {
+
+public:
+	//パーツID
+	enum PartId
+	{
+		kRoot,  //大元
+		kSpine,	//脊椎
+		kChest,	//胸
+		kHead,	//頭
+		kArmL,	//左腕
+		kArmR,	//右腕
+		kHip,	//尻
+		kLegL,	//左足
+		kLegR,	//右足
+
+		kNumPartId
+	};
 
   public: // メンバ関数
 	/// <summary>
@@ -45,8 +63,7 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
-	//ラジアン変換
-	float Rad(float x);
+	
 
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -61,7 +78,7 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	//ワールドトランスフォーム
-	WorldTransform worldTransform_;
+	WorldTransform worldTransforms_[kNumPartId];
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;

@@ -26,7 +26,6 @@ Matrix4 affin::generateScaleMat(WorldTransform& worldTransform)
 	return matScale;
 }
 
-
 void affin::setRotateMat(AffinMat& mat, WorldTransform& worldTransform) {
 	mat.rotateX.m[1][1] = cos(worldTransform.rotation_.x);
 	mat.rotateX.m[1][2] = sin(worldTransform.rotation_.x);
@@ -43,35 +42,6 @@ void affin::setRotateMat(AffinMat& mat, WorldTransform& worldTransform) {
 	mat.rotateZ.m[1][0] = -sin(worldTransform.rotation_.z);
 	mat.rotateZ.m[1][1] = cos(worldTransform.rotation_.z);
 }
-
-//
-//void affin::setRotateMat(Matrix4& mat, WorldTransform& worldTransform, int axis)
-//{
-//	switch (axis)
-//	{
-//		case 1:
-//			mat.m[1][1] = cos(worldTransform.rotation_.x);
-//			mat.m[1][2] = sin(worldTransform.rotation_.x);
-//			mat.m[2][1] = -sin(worldTransform.rotation_.x);
-//			mat.m[2][2] = cos(worldTransform.rotation_.x);
-//
-//			break;
-//		case 2:
-//			mat.m[0][0] = cos(worldTransform.rotation_.y);
-//			mat.m[0][2] = -sin(worldTransform.rotation_.y);
-//			mat.m[2][0] = sin(worldTransform.rotation_.y);
-//			mat.m[2][2] = cos(worldTransform.rotation_.y);
-//
-//			break;
-//		case 3:
-//			mat.m[0][0] = cos(worldTransform.rotation_.z);
-//			mat.m[0][1] = sin(worldTransform.rotation_.z);
-//			mat.m[1][0] = -sin(worldTransform.rotation_.z);
-//			mat.m[1][1] = cos(worldTransform.rotation_.z);
-//
-//			break;
-//	}
-//}
 
 Matrix4 affin::generateRotateXMat(WorldTransform& worldTransform)
 {
