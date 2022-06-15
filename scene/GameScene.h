@@ -15,6 +15,7 @@
 #include "affin/affin.h"
 #include "MyFunc.h"
 
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -65,6 +66,9 @@ public:
 
 	
 
+	//度変換
+	float Deg(float x);
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -87,6 +91,9 @@ public:
 	DebugCamera* debugCamera_ = nullptr;
 
 	const float M_PI = 3.141592f;
+
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 
 	/// <summary>
 	/// ゲームシーン用
