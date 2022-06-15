@@ -49,6 +49,9 @@ class GameScene {
 	//ラジアン変換
 	float Rad(float x);
 
+	//度変換
+	float Deg(float x);
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
