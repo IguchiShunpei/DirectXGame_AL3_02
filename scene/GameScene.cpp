@@ -3,7 +3,7 @@
 #include <cassert>
 #include "AxisIndicator.h"
 #include "PrimitiveDrawer.h"
-#include "affin/affin.h"
+
 
 GameScene::GameScene() {}
 
@@ -39,26 +39,51 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 
-	//カメラ視点座標を設定
-	/*viewProjection_.eye = { 0.0f,0.0f,-10.0f };*/
 
-	//カメラ注視点座標を設定
-	/*viewProjection_.target = { 10.0f,0.0f,0.0f };*/
+	//ワールドトランスフォームの初期化
 
-	//カメラ上方向ベクトルを設定(右上45度指定)
-	/*viewProjection_.up = { cosf(M_PI / 4.0f),sinf(M_PI / 4.0f),0.0f };*/
+	//親(大元)
+	worldTransforms_[PartId::kRoot].Initialize();
 
-	//カメラ垂直方向視野角を設定
-	/*viewProjection_.fovAngleY = Rad(10.0f);*/
+	//子(脊椎)
+	worldTransforms_[PartId::kSpine].Initialize();
+	worldTransforms_[PartId::kSpine].parent_ = &worldTransforms_[PartId::kRoot];
+	worldTransforms_[PartId::kSpine].translation_ = { 0.0f,0.0f,0.0f };
 
-	//アスペクト比を設定
-	/*viewProjection_.aspectRatio = 1.0f;*/
+	//子(胸)
+	worldTransforms_[PartId::kChest].Initialize();
+	worldTransforms_[PartId::kChest].parent_ = &worldTransforms_[PartId::kSpine];
+	worldTransforms_[PartId::kChest].translation_ = { 0.0f,0.0f,0.0f };
 
-	//ニアクリップ距離を設定
-	viewProjection_.nearZ = 52.0f;
+	//子(頭)
+	worldTransforms_[PartId::kHead].Initialize();
+	worldTransforms_[PartId::kHead].parent_ = &worldTransforms_[PartId::kChest];
+	worldTransforms_[PartId::kHead].translation_ = { 0.0f,2.5f,0.0f };
 
-	//ファークリップ距離を設定
-	viewProjection_.farZ = 53.0f;
+	//子(左腕)
+	worldTransforms_[PartId::kArmL].Initialize();
+	worldTransforms_[PartId::kArmL].parent_ = &worldTransforms_[PartId::kChest];
+	worldTransforms_[PartId::kArmL].translation_ = { 2.5f,0.0f,0.0f };
+
+	//子(右腕)
+	worldTransforms_[PartId::kArmR].Initialize();
+	worldTransforms_[PartId::kArmR].parent_ = &worldTransforms_[PartId::kChest];
+	worldTransforms_[PartId::kArmR].translation_ = { -2.5f,0.0f,0.0f };
+
+	//子(尻)
+	worldTransforms_[PartId::kHip].Initialize();
+	worldTransforms_[PartId::kHip].parent_ = &worldTransforms_[PartId::kSpine];
+	worldTransforms_[PartId::kHip].translation_ = { 0.0f,-2.5f,0.0f };
+
+	//子(左足)
+	worldTransforms_[PartId::kLegL].Initialize();
+	worldTransforms_[PartId::kLegL].parent_ = &worldTransforms_[PartId::kHip];
+	worldTransforms_[PartId::kLegL].translation_ = { 2.5f,-3.0f,0.0f };
+
+	//子(右足)
+	worldTransforms_[PartId::kLegR].Initialize();
+	worldTransforms_[PartId::kLegR].parent_ = &worldTransforms_[PartId::kHip];
+	worldTransforms_[PartId::kLegR].translation_ = { -2.5f,-3.0f,0.0f };
 
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -74,38 +99,85 @@ void GameScene::Initialize() {
 
 	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
+}
 
-	for (WorldTransform& worldTransform : worldTransforms_)
+void GameScene::Update()
+{
+	////デバッグカメラの更新
+	//debugCamera_->Update();
+
+	//キャラクターの移動処理
 	{
-		//ワールドトランスフォームの初期化
-		worldTransform.Initialize();
+		//キャラクターの移動ベクトル
+		Vector3 move = { 0.0f,0.0f,0.0f };
 
-		//x,y,z方向のスケーリングを設定
-		worldTransform.scale_ = { 1.0,1.0f,1.0f };
+		const float kCharacterSpeed = 0.2f;
 
-		//x,y,z軸周りの回転角を設定
-		worldTransform.rotation_ = { rota(engine),rota(engine),rota(engine) };
+		//押した方向で移動量を変化
+		if (input_->PushKey(DIK_RIGHT))
+		{
+			move.x += kCharacterSpeed;
+		}
+		else if (input_->PushKey(DIK_LEFT))
+		{
+			move.x -= kCharacterSpeed;
+		}
 
-		//X,Y,Z軸周りの平行移動を設定
-		worldTransform.translation_ = { trans(engine),trans(engine),trans(engine) };
+		//[0]のtransLationにmoveを加算する
+		worldTransforms_[PartId::kRoot].translation_ += move;
 
-		//Matrix4 affinMat[5] = { MathUtility::Matrix4Identity() };
+		//アフィン変換用の行列
 		affin::AffinMat affinMat;
 
-		//拡大
-		affin::setScaleMat(affinMat.scale, worldTransform);
+		//Translateの情報を入れる
+		affin::setTranslateMat(affinMat.translate, worldTransforms_[PartId::kRoot]);
 
-		//回転
-		affin::setRotateMat(affinMat, worldTransform);
+		//matWorldに単位行列を入れる
+		worldTransforms_[PartId::kRoot].matWorld_ = MathUtility::Matrix4Identity();
 
-		//平行移動
-		affin::setTranslateMat(affinMat.translate, worldTransform);
-
-		//合成
-		affin::setTransformationWolrdMat(affinMat, worldTransform);
+		//行列の計算
+		affin::setTransformationWolrdMat(affinMat, worldTransforms_[PartId::kRoot]);
 
 		//行列の転送
-		worldTransform.TransferMatrix();
+		worldTransforms_[PartId::kRoot].TransferMatrix();
+
+		debugText_->SetPos(50, 150);
+		debugText_->Printf("translation:%f", worldTransforms_[PartId::kRoot].translation_);
+	
+		//上半身回転処理
+		{
+			//押した方向で移動ベクトルを変更
+			if (input_->PushKey(DIK_U))
+			{
+				worldTransforms_[PartId::kChest].rotation_.y += 0.1;
+			}
+			else if (input_->PushKey(DIK_I))
+			{
+				worldTransforms_[PartId::kChest].rotation_.y -= 0.1;
+			}
+		}
+
+		//上半身回転処理
+		{
+			//押した方向で移動ベクトルを変更
+			if (input_->PushKey(DIK_J))
+			{
+				worldTransforms_[PartId::kHip].rotation_.y += 0.1;
+			}
+			else if (input_->PushKey(DIK_K))
+			{
+				worldTransforms_[PartId::kHip].rotation_.y -= 0.1;
+			}
+		}
+	
+	}
+	{
+		//大元から順に更新していく
+		for (int i = PartId::kSpine; i < PartId::kNumPartId; i++)
+		{
+			MyFunc::UpdateWorldTransform(worldTransforms_[i]);
+		}
+	
 	}
 
 }
@@ -277,10 +349,12 @@ void GameScene::Draw() {
 	/// </summary>
 
 	//3Dモデル描画
-	for (WorldTransform& worldTransform : worldTransforms_)
+	for (int i = kChest; i <= kLegR; i++)
 	{
-		model_->Draw(worldTransform, viewProjection_, textureHandle_);
+		model_->Draw(worldTransforms_[i], viewProjection_, textureHandle_);
 	}
+
+	
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -305,14 +379,4 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
-}
-
-float GameScene::Rad(float x)
-{
-	return x * M_PI / 180;
-}
-
-float GameScene::Deg(float x)
-{
-	return x / (M_PI / 180);
 }
