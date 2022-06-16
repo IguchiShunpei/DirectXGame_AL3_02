@@ -13,7 +13,7 @@
 #include "WinApp.h"
 #include "math.h"
 #include "affin/affin.h"
-#include "MyFunc.h"
+#include "MyFunc/MyFunc.h"
 
 /// <summary>
 /// ゲームシーン
@@ -63,8 +63,6 @@ public:
 	/// </summary>
 	void Draw();
 
-	
-
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -78,7 +76,7 @@ public:
 	Model* model_ = nullptr;
 
 	//ワールドトランスフォーム
-	WorldTransform worldTransforms_[kNumPartId];
+	WorldTransform worldTransform_;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -87,6 +85,13 @@ public:
 	DebugCamera* debugCamera_ = nullptr;
 
 	const float M_PI = 3.141592f;
+	const float G = 9.8f;
+	const float e = 0.8f;
+
+	Vector3 startSpeed = {0.3f,0.0f,0.0f};
+
+	float flame = 0.0f;
+
 
 	/// <summary>
 	/// ゲームシーン用

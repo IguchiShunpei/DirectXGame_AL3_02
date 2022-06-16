@@ -23,5 +23,8 @@ namespace MyFunc
 	float Rad2Deg(float x);
 
 	void UpdateWorldTransform(WorldTransform& worldTransform);
+
+	//…•½“ŠË
+	void HorizontalProjection(WorldTransform& worldTransform,Vector3 &startSpeed ,float G,float e,float &flame);
 };
 
