@@ -72,7 +72,8 @@ void GameScene::Update()
 		viewProjection_.TransferMatrix();
 	}
 
-	player_->Update();
+	//移動
+	player_->Move();
 }
 
 
