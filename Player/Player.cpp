@@ -20,6 +20,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 //更新
 void Player::Update()
 {
+
+}
+
+//移動
+void Player::Move()
+{
 	//キャラクターの移動ベクトル
 	Vector3 move = { 0,0,0 };
 

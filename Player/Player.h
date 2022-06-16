@@ -18,6 +18,9 @@ public:
 	//XV
 	void Update();
 
+	//ˆÚ“®
+	void Move();
+
 	//•`‰æ
 	void Draw(ViewProjection viewProjection_);
 
