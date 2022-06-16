@@ -14,6 +14,7 @@
 #include "math.h"
 #include "affin/affin.h"
 #include "MyFunc.h"
+#include "Player/Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -63,8 +64,6 @@ public:
 	/// </summary>
 	void Draw();
 
-	
-
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -77,14 +76,17 @@ public:
 	//3Dモデル
 	Model* model_ = nullptr;
 
-	//ワールドトランスフォーム
-	WorldTransform worldTransforms_[kNumPartId];
+	//自キャラ
+	Player* player_ = nullptr;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
+
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
 
 	const float M_PI = 3.141592f;
 

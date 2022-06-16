@@ -55,6 +55,12 @@
     <Filter Include="ヘッダー ファイル\affin">
       <UniqueIdentifier>{3ecd8416-00c5-41dc-ab25-35c61474ee93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{741fcad0-d758-4934-9100-bbed97f958e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{51acb2d0-77eb-4285-a4c2-d548c6278bb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="MyFunc.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="MyFunc.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
