@@ -55,11 +55,11 @@
     <Filter Include="ヘッダー ファイル\affin">
       <UniqueIdentifier>{3ecd8416-00c5-41dc-ab25-35c61474ee93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Player">
-      <UniqueIdentifier>{741fcad0-d758-4934-9100-bbed97f958e0}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\MyFunc">
+      <UniqueIdentifier>{186e203b-963e-429a-a982-5e723f6d68e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Player">
-      <UniqueIdentifier>{51acb2d0-77eb-4285-a4c2-d548c6278bb1}</UniqueIdentifier>
+    <Filter Include="ヘッダー ファイル\MyFunc">
+      <UniqueIdentifier>{b541eb2a-71fa-4f40-8724-3cfd4b117ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,8 +81,8 @@
     <ClCompile Include="affin\affin.cpp">
       <Filter>ソース ファイル\affin</Filter>
     </ClCompile>
-    <ClCompile Include="MyFunc.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="MyFunc\MyFunc.cpp">
+      <Filter>ソース ファイル\MyFunc</Filter>
     </ClCompile>
     <ClCompile Include="Player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
@@ -173,8 +173,8 @@
     <ClInclude Include="affin\affin.h">
       <Filter>ヘッダー ファイル\affin</Filter>
     </ClInclude>
-    <ClInclude Include="MyFunc.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="MyFunc\MyFunc.h">
+      <Filter>ヘッダー ファイル\MyFunc</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
       <Filter>ヘッダー ファイル\Player</Filter>

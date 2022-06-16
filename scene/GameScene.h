@@ -13,9 +13,7 @@
 #include "WinApp.h"
 #include "math.h"
 #include "affin/affin.h"
-#include "MyFunc.h"
-#include "Player/Player.h"
-
+#include "MyFunc/MyFunc.h"
 
 /// <summary>
 /// ゲームシーン
@@ -77,8 +75,8 @@ public:
 	//3Dモデル
 	Model* model_ = nullptr;
 
-	//自キャラ
-	Player* player_ = nullptr;
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -90,6 +88,13 @@ public:
 	bool isDebugCameraActive_ = false;
 
 	const float M_PI = 3.141592f;
+	const float G = 9.8f;
+	const float e = 0.8f;
+
+	Vector3 startSpeed = {0.3f,0.0f,0.0f};
+
+	float flame = 0.0f;
+
 
 	//カメラ上方向の角度
 	float viewAngle = 0.0f;

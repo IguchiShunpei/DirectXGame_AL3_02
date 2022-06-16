@@ -28,6 +28,11 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+
+	//カメラ視点座標を設定
+	viewProjection_.eye = {50.0f,50.0f,-50.0f};
 
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -49,31 +54,56 @@ void GameScene::Initialize() {
 
 	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
+
+
+	//x,y,z方向のスケーリングを設定
+	worldTransform_.scale_ = { 10.0f,10.0f,10.0f };
+
+	//x,y,z軸周りの回転角を設定
+	worldTransform_.rotation_ = { MyFunc::Deg2Rad(0.0f),MyFunc::Deg2Rad(0.0f),MyFunc::Deg2Rad(0.0f) };
+
+	//X,Y,Z軸周りの平行移動を設定
+	worldTransform_.translation_ = { -60.0f,30.0f,0.0f };
+
+	affin::AffinMat affinMat;
+
+	///////////スケーリング ここから///////////////// 
+
+	affin::setScaleMat(affinMat.scale, worldTransform_);
+
+	///////////スケーリング ここまで/////////////////
+
+	///////////////回転 ここから///////////////////
+
+	affin::setRotateMat(affinMat, worldTransform_);
+
+	///////////////回転 ここまで///////////////////
+
+	///////////////平行 ここから///////////////////
+
+	affin::setTranslateMat(affinMat.translate, worldTransform_);
+
+	///////////////平行 ここまで///////////////////
+
+	//合成
+	affin::setTransformationWolrdMat(affinMat, worldTransform_);
+
+	//行列の転送
+	worldTransform_.TransferMatrix();
 }
 
 void GameScene::Update()
 {
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_SPACE))
-	{
-		isDebugCameraActive_ = tlue;
-	}
-#endif
-	if (isDebugCameraActive_)
-	{
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-	}
-	else
-	{
-		viewProjection_.UpdateMatrix();
-		viewProjection_.TransferMatrix();
-	}
+	////デバッグカメラの更新
+	//debugCamera_->Update();
 
-	//移動
-	player_->Move();
+	MyFunc::HorizontalProjection(worldTransform_, startSpeed, G, e, flame);
+
+	debugText_->SetPos(50, 50);
+	debugText_->Printf("translation:%f,%f,%f",
+		worldTransform_.translation_.x,
+		worldTransform_.translation_.y,
+		worldTransform_.translation_.z);
 }
 
 
@@ -104,8 +134,8 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//自キャラの描画
-	player_->Draw(viewProjection_);
+	//3Dモデル描画
+		model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
