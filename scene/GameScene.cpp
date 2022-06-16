@@ -5,12 +5,14 @@
 #include "PrimitiveDrawer.h"
 
 
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene()
 {
 	delete model_;
 	delete debugCamera_;
+	delete player_;
 }
 
 void GameScene::Initialize() {
@@ -35,6 +37,12 @@ void GameScene::Initialize() {
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	//自キャラの生成
+	player_ = new Player();
+
+	//自キャラの初期化
+	player_->Initialize(model_, textureHandle_);
+
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
@@ -42,7 +50,7 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 
 	//軸方向表示が参照するビュープロジェクションを指定する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	//ライン描画が参照するビュープロジェクションを指定する(アドレス渡し)
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());
@@ -98,6 +106,7 @@ void GameScene::Update()
 		worldTransform_.translation_.z);
 }
 
+
 void GameScene::Draw() {
 
 	// コマンドリストの取得
@@ -152,4 +161,3 @@ void GameScene::Draw() {
 
 #pragma endregion
 }
-

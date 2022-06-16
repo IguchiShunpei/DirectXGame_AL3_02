@@ -84,6 +84,9 @@ public:
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+
 	const float M_PI = 3.141592f;
 	const float G = 9.8f;
 	const float e = 0.8f;
@@ -92,6 +95,9 @@ public:
 
 	float flame = 0.0f;
 
+
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 
 	/// <summary>
 	/// ゲームシーン用

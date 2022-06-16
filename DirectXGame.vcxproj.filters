@@ -84,6 +84,9 @@
     <ClCompile Include="MyFunc\MyFunc.cpp">
       <Filter>ソース ファイル\MyFunc</Filter>
     </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="MyFunc\MyFunc.h">
       <Filter>ヘッダー ファイル\MyFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
