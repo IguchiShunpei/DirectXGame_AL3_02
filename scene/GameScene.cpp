@@ -72,7 +72,7 @@ void GameScene::Update()
 	}
 
 	//移動
-	player_->Move();
+	player_->Update();
 }
 
 void GameScene::Draw() {
