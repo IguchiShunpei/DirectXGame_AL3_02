@@ -16,6 +16,7 @@
 #include "MyFunc.h"
 #include "Player/Player.h"
 
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -89,6 +90,9 @@ public:
 	bool isDebugCameraActive_ = false;
 
 	const float M_PI = 3.141592f;
+
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 
 	/// <summary>
 	/// ゲームシーン用
