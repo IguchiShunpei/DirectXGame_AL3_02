@@ -20,7 +20,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 //XV
 void Player::Update()
 {
-
+	Move();
 }
 
 //ˆÚ“®
