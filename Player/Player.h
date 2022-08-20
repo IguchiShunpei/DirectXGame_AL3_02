@@ -9,6 +9,8 @@
 #include "ViewProjection.h"
 #include "MyFunc.h"
 #include "PlayerBullet.h"
+#include<memory>
+#include<list>
 
 //Ž©ƒLƒƒƒ‰
 class Player
@@ -43,7 +45,7 @@ private:
 	uint32_t textureHandle_ = 0u;
 
 	//’e
-	PlayerBullet* bullet_ = nullptr;
+	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
 	Input* input_ = nullptr;
 	DebugText* debugText_ = nullptr;
