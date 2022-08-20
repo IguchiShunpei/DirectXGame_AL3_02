@@ -7,6 +7,8 @@
 #include "Input.h"
 #include "affin/affin.h"
 #include "ViewProjection.h"
+#include "MyFunc.h"
+#include "PlayerBullet.h"
 
 //自キャラ
 class Player
@@ -21,6 +23,12 @@ public:
 	//移動
 	void Move();
 
+	//回転
+	void Rotate();
+
+	//攻撃
+	void Attack();
+
 	//描画
 	void Draw(ViewProjection viewProjection_);
 
@@ -33,6 +41,9 @@ private:
 
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
+	//弾
+	PlayerBullet* bullet_ = nullptr;
 
 	Input* input_ = nullptr;
 	DebugText* debugText_ = nullptr;

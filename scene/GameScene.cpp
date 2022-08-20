@@ -52,6 +52,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
+	player_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE))
 	{
@@ -70,9 +71,6 @@ void GameScene::Update()
 		viewProjection_.UpdateMatrix();
 		viewProjection_.TransferMatrix();
 	}
-
-	//移動
-	player_->Move();
 }
 
 void GameScene::Draw() {

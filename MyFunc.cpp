@@ -27,7 +27,6 @@ void MyFunc::UpdateWorldTransform(WorldTransform& worldTransform)
 
 	//s—ñ‚ÌŒvZ
 	affin::setTransformationWolrdMat(affinMat, worldTransform);
-	worldTransform.matWorld_ *= worldTransform.parent_->matWorld_;
 
 	//s—ñ‚Ì“]‘—
 	worldTransform.TransferMatrix();

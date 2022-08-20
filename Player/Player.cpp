@@ -20,7 +20,31 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 //XV
 void Player::Update()
 {
+	//ˆÚ“®
 	Move();
+	//‰ñ“]
+	Rotate();
+	MyFunc::UpdateWorldTransform(worldTransform_);
+
+	//UŒ‚
+	Attack();
+	//’eXV
+	if (bullet_)
+	{
+		bullet_->Update();
+	}
+
+	debugText_->SetPos(50, 50);
+	debugText_->Printf("%f,%f,%f",
+		worldTransform_.translation_.x,
+		worldTransform_.translation_.y,
+		worldTransform_.translation_.z);
+
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("%f,%f,%f",
+		worldTransform_.rotation_.x,
+		worldTransform_.rotation_.y,
+		worldTransform_.rotation_.z);
 }
 
 //ˆÚ“®
@@ -62,31 +86,60 @@ void Player::Move()
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
+	
+}
 
-	//ƒAƒtƒBƒ“•ÏŠ·—p‚Ìs—ñ
-	affin::AffinMat affinMat;
+void Player::Rotate()
+{
+	//ƒLƒƒƒ‰ƒNƒ^[‚Ì‰ñ“]ƒxƒNƒgƒ‹
+	Vector3 rotate = { 0,0,0 };
 
-	//Translate‚Ìî•ñ‚ð“ü‚ê‚é
-	affin::setTranslateMat(affinMat.translate, worldTransform_);
+	const float kCharacterSpeed = 0.02f;
 
-	//matWorld‚É’PˆÊs—ñ‚ð“ü‚ê‚é
-	worldTransform_.matWorld_ = MathUtility::Matrix4Identity();
+	//‰Ÿ‚µ‚½•ûŒü‚ÅˆÚ“®—Ê‚ð•Ï‰»
+	if (input_->PushKey(DIK_U))
+	{
+		rotate.y = kCharacterSpeed;
+	}
+	else if (input_->PushKey(DIK_I))
+	{
+		rotate.y = -kCharacterSpeed;
+	}
 
-	//s—ñ‚ÌŒvŽZ
-	affin::setTransformationWolrdMat(affinMat, worldTransform_);
+	//ˆÚ“®ŒÀŠEÀ•W
+	const float kRotateLimitX = 0.5f;
 
-	//s—ñ‚Ì“]‘—
-	worldTransform_.TransferMatrix();
+	//rotation‚Érotate‚ð‰ÁŽZ‚·‚é
+	worldTransform_.rotation_ += rotate;
 
-	debugText_->SetPos(50, 50);
-	debugText_->Printf("%f,%f,%f",
-		worldTransform_.translation_.x,
-		worldTransform_.translation_.y,
-		worldTransform_.translation_.z);
+	//”ÍˆÍ‚ð’´‚¦‚È‚¢ˆ—
+	worldTransform_.rotation_.y = max(worldTransform_.rotation_.y, -kRotateLimitX);
+	worldTransform_.rotation_.y = min(worldTransform_.rotation_.y, +kRotateLimitX);
+
 }
 
 //•`‰æ
-void Player::Draw(ViewProjection viewProjection_)
+void Player::Draw(ViewProjection viewProjection)
 {
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	if (bullet_)
+	{
+		bullet_->Draw(viewProjection);
+	}
+}
+
+//’e‚Ì”­ŽË
+void Player::Attack() 
+{
+
+	if (input_->TriggerKey(DIK_SPACE)) {
+		//’e‚ð¶¬‚µ‰Šú‰»
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		//’e‚ð“o˜^‚·‚é
+		bullet_ = newBullet;
+
+	}
 }
