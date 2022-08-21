@@ -34,6 +34,9 @@ public:
 	//描画
 	void Draw(ViewProjection viewProjection_);
 
+	//キャラの向きに応じた方向に球を出す
+	Vector3 bVelocity(Vector3& velocity, WorldTransform& worldTransform);
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
