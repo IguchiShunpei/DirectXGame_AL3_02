@@ -16,22 +16,30 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 
 void Enemy::Update()
 {
+	//単位行列を設定
 	worldTransform_.matWorld_ = MathUtility::Matrix4Identity();
 
-	//座標を移動させる
-	worldTransform_.translation_ -= velocity_;
+	switch(phase_)
+	{
+	case Phase::Approach: //接近フェーズ
+	default:
+		//移動(ベクトルを加算)
+		Approach();
+		break;
+	case Phase::Leave:   //離脱フェーズ
+		Leave();
+		break;
+	
+	}
+	//行列の計算
 	affinMat.translate = affin::generateTransMat(worldTransform_);
+	
+	//行列の合成
 	affin::setTransformationWolrdMat(affinMat, worldTransform_);
 
 	//行列の転送
 	worldTransform_.TransferMatrix();
-
-	//敵が画面外に行った際に座標を初期値へ戻す処理
-	if (worldTransform_.translation_.z <= -50)
-	{
-		worldTransform_.translation_.z = 50;
-	}
-
+	
 	//デバックテキスト
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("%f,%f,%f", 
@@ -43,4 +51,19 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void Enemy::Approach()
+{
+	worldTransform_.translation_ += approach_;
+	//既定の位置に着いたら離脱へ
+	if (worldTransform_.translation_.z <= 0.0f)
+	{
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::Leave()
+{
+	worldTransform_.translation_ += leave_;
 }
