@@ -10,7 +10,7 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 
 	worldTransform_.Initialize();
 	//引数で受けとった初期座標をセット
-	worldTransform_.translation_ = { 0,5,50 };
+	worldTransform_.translation_ = { 5,5,50 };
 
 }
 
@@ -40,6 +40,14 @@ void Enemy::Update()
 	//行列の転送
 	worldTransform_.TransferMatrix();
 	
+	//弾を発射
+	Fire();
+
+	//弾の更新
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Update();
+	}
+
 	//デバックテキスト
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("%f,%f,%f", 
@@ -51,19 +59,54 @@ void Enemy::Update()
 void Enemy::Draw(ViewProjection viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	//球の描画
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
 
 void Enemy::Approach()
 {
 	worldTransform_.translation_ += approach_;
+
+	//既定の位置に着いたら初期位置に戻す
+	if (worldTransform_.translation_.z <= -40.0f)
+	{
+		worldTransform_.translation_.z = 50.0f;
+	}
+
 	//既定の位置に着いたら離脱へ
-	if (worldTransform_.translation_.z <= 0.0f)
+	/*if (worldTransform_.translation_.z <= 0.0f)
 	{
 		phase_ = Phase::Leave;
-	}
+	}*/
 }
 
 void Enemy::Leave()
 {
 	worldTransform_.translation_ += leave_;
+}
+
+void Enemy::Fire()
+{
+	dalayTimer -= 0.1f;
+
+	//球の速度
+	const float kBulletSpeed = 0.5f;
+
+	Vector3 velocity(0, 0, kBulletSpeed);
+
+	//クールタイムが０になったとき
+	if (dalayTimer <= 0) {
+		//球の生成
+		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
+		//球の初期化
+		newBullet->Init(model_, worldTransform_.translation_, velocity);
+
+		//球の登録
+		bullets_.push_back(std::move(newBullet));
+
+		dalayTimer = 20.0f;
+	}
 }

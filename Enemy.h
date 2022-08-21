@@ -7,6 +7,7 @@
 #include <cassert>
 #include <memory>
 #include <list>
+#include "EnemyBullet.h"
 class Enemy
 {
 
@@ -41,6 +42,9 @@ public:
 	//離脱
 	void Leave();
 
+	//弾発射
+	void Fire();
+
 private:
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -65,6 +69,13 @@ private:
 	// Affin関数の構造体
 	affin::AffinMat affinMat;
 
+	//打ち出すまでの時間
+	float dalayTimer = 0.0f;
+
 	//敵の行動パターン
 	Phase phase_ = Phase::None;
+
+	//弾
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+
 };

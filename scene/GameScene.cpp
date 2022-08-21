@@ -13,6 +13,7 @@ GameScene::~GameScene()
 	delete model_;
 	delete debugCamera_;
 	delete player_;
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
