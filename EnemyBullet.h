@@ -8,24 +8,17 @@
 class EnemyBullet
 {
 public:
-	/// <summary>
-	/// 生成
-	/// </summary>
+	//生成
+	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
-	void Init(Model* model, const Vector3& position, const Vector3& velocity);
-
-	/// <summary>
-	/// 更新
-	/// </summary>
-
+	//更新
 	void Update();
-
-	/// <summary>
-	/// 描画
-	/// </summary>
 
 	//描画
 	void Draw(const ViewProjection& viewProjection);
+
+	//isDeadのgetter
+	bool IsDead() const { return isDead_; }
 
 private:
 	//ワールド変換データ
@@ -37,6 +30,14 @@ private:
 	//速度
 	Vector3 velocity_;
 
+	//寿命<frm>
+	static const int32_t kLiteTime = 60 * 5;
+
+	//デスタイマー
+	int32_t deathTimer_ = kLiteTime;
+
+	//デスフラグ
+	bool isDead_ = false;
 
 	//アフィン
 	affin::AffinMat affinMat;

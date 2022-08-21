@@ -48,6 +48,12 @@ void Enemy::Update()
 		bullet->Update();
 	}
 
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr < EnemyBullet>& bullet)
+		{
+			return bullet->IsDead();
+		});
+
 	//デバックテキスト
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("%f,%f,%f", 
@@ -90,23 +96,55 @@ void Enemy::Leave()
 
 void Enemy::Fire()
 {
-	dalayTimer -= 0.1f;
+	delayTimer -= 0.1f;
 
 	//球の速度
 	const float kBulletSpeed = 0.5f;
 
-	Vector3 velocity(0, 0, kBulletSpeed);
+	//自機狙い弾
+	assert(player_);
+
+	//プレイヤーのワールド座標の取得
+	Vector3 playerPosition;
+	playerPosition = player_->GetWorldPosition();
+	//敵のワールド座標の取得
+	Vector3 enemyPosition;
+	enemyPosition = GetWorldPosition();
+
+	Vector3 velocity(0, 0, 0);
+
+	//差分ベクトルを求める
+	velocity = enemyPosition - playerPosition;
+
+	//長さを求める
+	Vector3Length(velocity);
+	//正規化
+	Vector3Normalize(velocity);
+	//ベクトルの長さを,速さに合わせる
+	velocity *= kBulletSpeed;//これが速度になる
 
 	//クールタイムが０になったとき
-	if (dalayTimer <= 0) {
+	if (delayTimer <= 0) {
 		//球の生成
 		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 		//球の初期化
-		newBullet->Init(model_, worldTransform_.translation_, velocity);
+		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 		//球の登録
 		bullets_.push_back(std::move(newBullet));
 
-		dalayTimer = 20.0f;
+		delayTimer = 10.0f;
 	}
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	//ワールド座標を入れるための変数
+	Vector3 worldPos;
+
+	//ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }

@@ -8,6 +8,13 @@
 #include <memory>
 #include <list>
 #include "EnemyBullet.h"
+#include "Player/Player.h"
+#include "MathUtility.h"
+using namespace MathUtility;
+
+//自機クラスの前方宣言
+class Player;
+
 class Enemy
 {
 
@@ -19,21 +26,13 @@ class Enemy
 	};
 
 public:
-	/// <summary>
 	/// 生成
-	/// </summary>
-
 	void Initialize(Model* model, uint32_t textureHandle);
 
-	/// <summary>
 	/// 更新
-	/// </summary>
 	void Update();
 
-	/// <summary>
 	/// 描画
-	/// </summary>
-
 	void Draw(ViewProjection viewProjection);
 
 	//接近
@@ -44,6 +43,10 @@ public:
 
 	//弾発射
 	void Fire();
+
+	void SetPlayer(Player* player) { player_ = player; }
+
+	Vector3 GetWorldPosition();
 
 private:
 	//ワールドトランスフォーム
@@ -70,7 +73,7 @@ private:
 	affin::AffinMat affinMat;
 
 	//打ち出すまでの時間
-	float dalayTimer = 0.0f;
+	float delayTimer = 0.0f;
 
 	//敵の行動パターン
 	Phase phase_ = Phase::None;
@@ -78,4 +81,8 @@ private:
 	//弾
 	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
+	//自キャラ
+	Player* player_ = nullptr;
+
 };
+

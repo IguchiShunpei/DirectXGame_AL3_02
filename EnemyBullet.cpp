@@ -1,5 +1,6 @@
 #include "EnemyBullet.h"
-void EnemyBullet::Init(Model* model, const Vector3& position, const Vector3& velocity)
+
+void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity)
 {
 	// NULLポインタ
 	assert(model);
@@ -30,7 +31,11 @@ void EnemyBullet::Update()
 	//行列の合成
 	worldTransform_.TransferMatrix();
 
-
+	//時間経過で弾が消える
+	if (--deathTimer_ <= 0)
+	{
+		isDead_ = true;
+	}
 }
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection)

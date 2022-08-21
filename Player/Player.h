@@ -37,6 +37,9 @@ public:
 	//キャラの向きに応じた方向に球を出す
 	Vector3 bVelocity(Vector3& velocity, WorldTransform& worldTransform);
 
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

@@ -24,6 +24,7 @@ void Player::Update()
 	Move();
 	//回転
 	Rotate();
+
 	MyFunc::UpdateWorldTransform(worldTransform_);
 
 	//攻撃
@@ -34,7 +35,7 @@ void Player::Update()
 		bullet->Update();
 	}
 
-	//デスフラグの立ったたまを削除
+	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr < PlayerBullet>& bullet)
 		{
 			return bullet->IsDead();
@@ -177,4 +178,17 @@ Vector3 Player::bVelocity(Vector3& velocity, WorldTransform& worldTransform)
 		velocity.z * worldTransform.matWorld_.m[2][1];
 
 	return result;
+}
+
+Vector3 Player::GetWorldPosition()
+{
+	//ワールド座標を入れるための変数
+	Vector3 worldPos;
+
+	//ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
