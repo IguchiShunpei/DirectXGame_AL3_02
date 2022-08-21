@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\MyFunc">
       <UniqueIdentifier>{666e08b2-d43b-4faa-8e52-2871b21687ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{d010bdb1-67d0-431f-8a11-655460c77714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Enemy">
+      <UniqueIdentifier>{8e4a9a86-51f1-412a-9934-7f1454308284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="MyFunc.cpp">
       <Filter>ソース ファイル\MyFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="MyFunc.h">
       <Filter>ヘッダー ファイル\MyFunc</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -103,11 +103,11 @@ void Player::Rotate()
 	const float kCharacterSpeed = 0.02f;
 
 	//‰Ÿ‚µ‚½•ûŒü‚ÅˆÚ“®—Ê‚ð•Ï‰»
-	if (input_->PushKey(DIK_U))
+	if (input_->PushKey(DIK_I))
 	{
 		rotate.y = kCharacterSpeed;
 	}
-	else if (input_->PushKey(DIK_I))
+	else if (input_->PushKey(DIK_U))
 	{
 		rotate.y = -kCharacterSpeed;
 	}

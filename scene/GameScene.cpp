@@ -24,18 +24,24 @@ void GameScene::Initialize() {
 
 	//ファイル名を指定してテクスチャを読みこむ
 	textureHandle_ = TextureManager::Load("mario.jpg");
-
+	enemyHandle_ = TextureManager::Load("texture.jpg");
 	//3Dモデルの生成
 	model_ = Model::Create();
-
-	//ビュープロジェクションの初期化
-	viewProjection_.Initialize();
 
 	//自キャラの生成
 	player_ = new Player();
 
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
+
+	//敵キャラの生成
+	enemy_ = new Enemy();
+
+	//敵キャラの初期化
+	enemy_->Initialize(model_, enemyHandle_);
+
+	//ビュープロジェクションの初期化
+	viewProjection_.Initialize();
 
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -53,6 +59,7 @@ void GameScene::Initialize() {
 void GameScene::Update()
 {
 	player_->Update();
+	enemy_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE))
 	{
@@ -102,6 +109,9 @@ void GameScene::Draw() {
 
 	//自キャラの描画
 	player_->Draw(viewProjection_);
+
+	//敵キャラの描画
+	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

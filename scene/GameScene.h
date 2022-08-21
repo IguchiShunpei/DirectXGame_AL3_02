@@ -15,6 +15,7 @@
 #include "affin/affin.h"
 #include "MyFunc.h"
 #include "Player/Player.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -72,12 +73,16 @@ public:
 
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	uint32_t enemyHandle_ = 0;
 
 	//3Dモデル
 	Model* model_ = nullptr;
 
 	//自キャラ
 	Player* player_ = nullptr;
+
+	//敵キャラ
+	Enemy* enemy_ = nullptr;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
