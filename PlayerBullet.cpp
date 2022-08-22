@@ -56,3 +56,28 @@ void PlayerBullet::Draw(const ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, textureHandle_);
 
 }
+
+//ワールド座標を取得
+Vector3 PlayerBullet::GetWorldPosition()
+{
+	//ワールド座標を入れるための変数
+	Vector3 worldPos;
+
+	//ワールド行列の平行移動成分を取得
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+void PlayerBullet::OnCollision()
+{
+	isDead_ = true;
+}
+
+//半径を返す関数
+float PlayerBullet::GetRadius()
+{
+	return radius;
+}

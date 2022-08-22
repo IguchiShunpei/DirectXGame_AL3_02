@@ -19,18 +19,18 @@ void Enemy::Update()
 	//単位行列を設定
 	worldTransform_.matWorld_ = MathUtility::Matrix4Identity();
 
-	switch(phase_)
-	{
-	case Phase::Approach: //接近フェーズ
-	default:
-		//移動(ベクトルを加算)
-		Approach();
-		break;
-	case Phase::Leave:   //離脱フェーズ
-		Leave();
-		break;
-	
-	}
+	//switch(phase_)
+	//{
+	//case Phase::Approach: //接近フェーズ
+	//default:
+	//	//移動(ベクトルを加算)
+	//	Approach();
+	//	break;
+	//case Phase::Leave:   //離脱フェーズ
+	//	Leave();
+	//	break;
+	//
+	//}
 	//行列の計算
 	affinMat.translate = affin::generateTransMat(worldTransform_);
 	
@@ -137,6 +137,7 @@ void Enemy::Fire()
 	}
 }
 
+//ワールド座標を取得
 Vector3 Enemy::GetWorldPosition() {
 	//ワールド座標を入れるための変数
 	Vector3 worldPos;
@@ -147,4 +148,15 @@ Vector3 Enemy::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Enemy::OnCollision()
+{
+
+}
+
+//半径を返す関数
+float Enemy::GetRadius()
+{
+	return radius;
 }

@@ -65,6 +65,9 @@ public:
 	/// </summary>
 	void Draw();
 
+	//すべての子分の当たり判定をチェックする関数
+	void CheckAllCollisions();
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;

@@ -20,6 +20,15 @@ public:
 	//isDeadのgetter
 	bool IsDead() const { return isDead_; }
 
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	//半径を返す関数
+	float GetRadius();
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -41,4 +50,7 @@ private:
 
 	//アフィン
 	affin::AffinMat affinMat;
+
+	//半径
+	float radius = 1.0f;
 };

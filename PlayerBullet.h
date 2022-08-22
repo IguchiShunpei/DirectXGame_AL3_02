@@ -15,7 +15,7 @@ public:
 
 	//メンバ関数
 		//初期化
-	void Initialize(Model* model, const Vector3& position,const Vector3& velocity);
+	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
 	//更新処理
 	void Update();
@@ -25,6 +25,15 @@ public:
 
 	//isDeadのgetter
 	bool IsDead() const { return isDead_; }
+
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	//半径を返す関数
+	float GetRadius();
 
 private:
 	//速度
@@ -48,5 +57,7 @@ private:
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
-};
+	//半径
+	float radius = 1.0f;
 
+};

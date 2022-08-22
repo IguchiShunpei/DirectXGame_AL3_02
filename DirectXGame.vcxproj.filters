@@ -46,9 +46,6 @@
     <Filter Include="ソース ファイル\math">
       <UniqueIdentifier>{4c21a99e-f783-4367-bdcb-0ebd1d434719}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\math">
-      <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\affin">
       <UniqueIdentifier>{595ee447-dbee-489d-ad74-291c0a045f7b}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Enemy">
       <UniqueIdentifier>{8e4a9a86-51f1-412a-9934-7f1454308284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\audo\math">
+      <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,19 +171,19 @@
       <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
     <ClInclude Include="math\Matrix4.h">
-      <Filter>ヘッダー ファイル\math</Filter>
+      <Filter>ヘッダー ファイル\audo\math</Filter>
     </ClInclude>
     <ClInclude Include="math\Vector3.h">
-      <Filter>ヘッダー ファイル\math</Filter>
+      <Filter>ヘッダー ファイル\audo\math</Filter>
     </ClInclude>
     <ClInclude Include="math\MathUtility.h">
-      <Filter>ヘッダー ファイル\math</Filter>
+      <Filter>ヘッダー ファイル\audo\math</Filter>
     </ClInclude>
     <ClInclude Include="math\Vector2.h">
-      <Filter>ヘッダー ファイル\math</Filter>
+      <Filter>ヘッダー ファイル\audo\math</Filter>
     </ClInclude>
     <ClInclude Include="math\Vector4.h">
-      <Filter>ヘッダー ファイル\math</Filter>
+      <Filter>ヘッダー ファイル\audo\math</Filter>
     </ClInclude>
     <ClInclude Include="3d\AxisIndicator.h">
       <Filter>ヘッダー ファイル\3d</Filter>

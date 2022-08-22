@@ -180,6 +180,7 @@ Vector3 Player::bVelocity(Vector3& velocity, WorldTransform& worldTransform)
 	return result;
 }
 
+//ワールド座標を取得
 Vector3 Player::GetWorldPosition()
 {
 	//ワールド座標を入れるための変数
@@ -191,4 +192,15 @@ Vector3 Player::GetWorldPosition()
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Player::OnCollision()
+{
+
+}
+
+//半径を返す関数
+float Player::GetRadius()
+{
+	return radius;
 }

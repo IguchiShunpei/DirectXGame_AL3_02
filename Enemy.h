@@ -46,7 +46,17 @@ public:
 
 	void SetPlayer(Player* player) { player_ = player; }
 
+	//ワールド座標を取得
 	Vector3 GetWorldPosition();
+
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	//弾リスト
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+
+	//半径を返す関数
+	float GetRadius();
 
 private:
 	//ワールドトランスフォーム
@@ -84,5 +94,7 @@ private:
 	//自キャラ
 	Player* player_ = nullptr;
 
+	//半径
+	float radius = 1.0f;
 };
 
