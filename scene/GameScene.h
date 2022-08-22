@@ -16,6 +16,7 @@
 #include "MyFunc.h"
 #include "Player/Player.h"
 #include "Enemy.h"
+#include "skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -80,12 +81,16 @@ public:
 
 	//3Dモデル
 	Model* model_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	//自キャラ
 	Player* player_ = nullptr;
 
 	//敵キャラ
 	Enemy* enemy_ = nullptr;
+
+	//天球
+	skydome* skydome_ = nullptr;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
