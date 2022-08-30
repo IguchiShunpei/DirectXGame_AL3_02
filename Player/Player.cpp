@@ -1,13 +1,15 @@
 #include "Player.h"
 
+Player::Player(){}
+
 //初期化
 void Player::Initialize(Model* model, uint32_t textureHandle)
 {
 	assert(model);
 
 	//引数として受け取ったデータをメンバ変数に記録する
-	this->textureHandle_ = textureHandle;
-	this->model_ = model;
+    textureHandle_ = textureHandle;
+	model_ = model;
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -15,6 +17,10 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
+
+	worldTransform_.rotation_ = {};
+
+	worldTransform_.translation_ = Vector3{ 0,0,0 };
 }
 
 //更新
@@ -24,6 +30,9 @@ void Player::Update()
 	Move();
 	//回転
 	Rotate();
+
+	//ペアレント先更新
+	worldTransform_.matWorld_ *= worldTransform_.parent_->matWorld_;
 
 	MyFunc::UpdateWorldTransform(worldTransform_);
 
@@ -140,7 +149,12 @@ void Player::Draw(ViewProjection viewProjection)
 void Player::Attack() 
 {
 
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->PushKey(DIK_SPACE)) {
+
+		dalayTimer -= 0.1f;
+
+		//自キャラの座標をコピー
+		Vector3 position = GetWorldPosition();
 
 		//弾の速度
 		const float kBulletSpeed = 1.0f;
@@ -149,12 +163,19 @@ void Player::Attack()
 		//速度ベクトルを自機の向きに合わせて回転させる
 		velocity = bVelocity(velocity, worldTransform_);
 
-		//弾を生成し初期化
-		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		//クールタイムが０になったとき
+		if (dalayTimer <= 0)
+		{
+			//球の生成
+			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+			//球の初期化
+			newBullet->Initialize(model_, position, velocity);
 
-		//弾を登録する
-		bullets_.push_back(std::move(newBullet));
+			//球の登録
+			bullets_.push_back(std::move(newBullet));
+
+			dalayTimer = 1.0f;
+		}
 
 	}
 }
@@ -203,4 +224,9 @@ void Player::OnCollision()
 float Player::GetRadius()
 {
 	return radius;
+}
+
+void Player::SetParent(WorldTransform* worldTransform)
+{
+	worldTransform_.parent_ = worldTransform;
 }

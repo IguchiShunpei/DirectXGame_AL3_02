@@ -45,4 +45,5 @@ namespace affin {
 	//(2) ƒ[ƒ‹ƒhs—ñ‚ğ¶¬‚·‚éŠÖ”
 	void setTransformationWolrdMat(AffinMat& affinMat, WorldTransform& worldTransform);
 
+	Vector3 matVector(Vector3 v, Matrix4 mat);
 }

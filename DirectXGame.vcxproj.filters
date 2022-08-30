@@ -73,6 +73,18 @@
     <Filter Include="ヘッダー ファイル\audo\math">
       <UniqueIdentifier>{647f4977-924a-4954-923f-5619e5afc9a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\skydome">
+      <UniqueIdentifier>{55466e73-e143-4874-975f-4d7afd2436e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\skydome">
+      <UniqueIdentifier>{819eb5a8-e6f2-47e4-a7c7-f06040b20037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\RailCamera">
+      <UniqueIdentifier>{6a13e401-6835-4a1c-800b-d2287b9c74cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\RailCamera">
+      <UniqueIdentifier>{b2d4628c-c655-40c4-989a-399467edda02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -109,7 +121,10 @@
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="skydome.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="RailCamera.cpp">
+      <Filter>ソース ファイル\RailCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,9 +215,6 @@
     <ClInclude Include="Player\Player.h">
       <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBullet.h">
-      <Filter>ヘッダー ファイル\Player</Filter>
-    </ClInclude>
     <ClInclude Include="MyFunc.h">
       <Filter>ヘッダー ファイル\MyFunc</Filter>
     </ClInclude>
@@ -213,7 +225,13 @@
       <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="skydome.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\skydome</Filter>
+    </ClInclude>
+    <ClInclude Include="RailCamera.h">
+      <Filter>ヘッダー ファイル\RailCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

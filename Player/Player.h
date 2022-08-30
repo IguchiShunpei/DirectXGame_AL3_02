@@ -16,6 +16,7 @@
 class Player
 {
 public:
+	Player();
 	//初期化
 	void Initialize(Model* model,uint32_t textureHandle);
 
@@ -49,6 +50,9 @@ public:
 	//半径を返す関数
 	float GetRadius();
 
+	//親子構造のセッター
+	void SetParent(WorldTransform* worldTransform);
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
@@ -58,6 +62,9 @@ private:
 
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
+	//打ち出すまでの時間
+	float dalayTimer = 0.0f;
 
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;

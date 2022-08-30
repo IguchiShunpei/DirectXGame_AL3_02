@@ -127,3 +127,13 @@ void affin::setTransformationWolrdMat(AffinMat& affinMat, WorldTransform& worldT
 	worldTransform.matWorld_ *= affinMat.rotateZ;
 	worldTransform.matWorld_ *= affinMat.translate;
 }
+
+Vector3 affin::matVector(Vector3 v, Matrix4 mat)
+{
+	Vector3 pos;
+	pos.x = mat.m[0][0] * v.x + mat.m[0][1] * v.y + mat.m[0][2] * v.z + mat.m[0][3] * 1;
+	pos.y = mat.m[1][0] * v.x + mat.m[1][1] * v.y + mat.m[1][2] * v.z + mat.m[1][3] * 1;
+	pos.z = mat.m[2][0] * v.x + mat.m[2][1] * v.y + mat.m[2][2] * v.z + mat.m[2][3] * 1;
+
+	return pos;
+}

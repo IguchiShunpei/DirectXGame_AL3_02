@@ -17,6 +17,7 @@
 #include "Player/Player.h"
 #include "Enemy.h"
 #include "skydome.h"
+#include "RailCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -91,6 +92,9 @@ public:
 
 	//天球
 	skydome* skydome_ = nullptr;
+
+	//レールカメラ
+	RailCamera* railCamera_ = nullptr;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;

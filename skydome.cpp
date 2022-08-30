@@ -6,7 +6,7 @@ void skydome::Initialize(Model* model) {
 
 	worldTransform_.Initialize();
 
-	worldTransform_.scale_ = { 2, 2, 2 };
+	worldTransform_.scale_ = { 2.0f, 2.0f, 2.0f };
 	Matrix4 matScale;
 
 	matScale = affin::generateScaleMat(worldTransform_);

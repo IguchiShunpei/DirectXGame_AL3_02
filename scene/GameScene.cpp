@@ -14,6 +14,7 @@ GameScene::~GameScene()
 	delete debugCamera_;
 	delete player_;
 	delete enemy_;
+	delete skydome_;
 	delete modelSkydome_;
 }
 
@@ -30,6 +31,10 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+
+	//レールカメラの生成
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(Vector3(0, 0, -50), Vector3(0, 0, 0));
 
 	//自キャラの生成
 	player_ = new Player();
@@ -70,7 +75,10 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
+	player_->SetParent(railCamera_->GetWorldPosition());
+
 	player_->Update();
+	railCamera_->Update();
 	enemy_->Update();
 	skydome_->Update();
 	isDebugCameraActive_ = true;
@@ -121,14 +129,14 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	//天球の描画
+	skydome_->Draw(railCamera_->GetViewProjection());
+
 	//自キャラの描画
-	player_->Draw(viewProjection_);
+	player_->Draw(railCamera_->GetViewProjection());
 
 	//敵キャラの描画
-	enemy_->Draw(viewProjection_);
-
-	//天球の描画
-	skydome_->Draw(debugCamera_->GetViewProjection());
+	enemy_->Draw(railCamera_->GetViewProjection());
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
