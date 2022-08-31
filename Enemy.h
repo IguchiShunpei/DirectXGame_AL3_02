@@ -15,6 +15,9 @@ using namespace MathUtility;
 //自機クラスの前方宣言
 class Player;
 
+//GameSceneの前方宣言
+class GameScene;
+
 class Enemy
 {
 
@@ -27,7 +30,7 @@ class Enemy
 
 public:
 	/// 生成
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle,const Vector3& v);
 
 	/// 更新
 	void Update();
@@ -52,11 +55,15 @@ public:
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
-	//弾リスト
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
-
 	//半径を返す関数
 	float GetRadius();
+
+	//敵リスト
+	const std::list<std::unique_ptr<Enemy>>& GetEnemys() { return enemys_; }
+
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
+	bool IsDead() const { return isDead_; }
 
 private:
 	//ワールドトランスフォーム
@@ -68,16 +75,19 @@ private:
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 	
+	//ゲームシーン
+	GameScene* gameScene_ = nullptr;
+
 	DebugText* debugText_ = nullptr;
 
 	//速度
 	Vector3 velocity_ = { 0.0f,0.0f,0.1f };
 
 	//接近速度
-	Vector3 approach_ = {0.0f,0.0f,-0.1f};
+	Vector3 approach_ = {0.0f,0.0f,-0.3f};
 
 	//離脱速度
-	Vector3 leave_ = {-0.15f,0.1f,0.1f};
+	Vector3 leave_ = {0.0f,0.0f,0.3f};
 
 	// Affin関数の構造体
 	affin::AffinMat affinMat;
@@ -88,8 +98,11 @@ private:
 	//敵の行動パターン
 	Phase phase_ = Phase::None;
 
-	//弾
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	//デスフラグ
+	bool isDead_ = false;
+
+	//敵リスト
+	std::list<std::unique_ptr<Enemy>> enemys_;
 
 	//自キャラ
 	Player* player_ = nullptr;

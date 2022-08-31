@@ -1,5 +1,6 @@
 #include "Enemy.h"
-void Enemy::Initialize(Model* model, uint32_t textureHandle) {
+#include "GameScene.h"
+void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& v) {
 	assert(model);
 
 	model_ = model;
@@ -10,7 +11,7 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 
 	worldTransform_.Initialize();
 	//引数で受けとった初期座標をセット
-	worldTransform_.translation_ = { 5,5,50 };
+	worldTransform_.translation_ = { v.x,v.y,v.z };
 
 }
 
@@ -43,17 +44,6 @@ void Enemy::Update()
 	//弾を発射
 	Fire();
 
-	//弾の更新
-	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
-		bullet->Update();
-	}
-
-	//デスフラグの立った弾を削除
-	bullets_.remove_if([](std::unique_ptr < EnemyBullet>& bullet)
-		{
-			return bullet->IsDead();
-		});
-
 	//デバックテキスト
 	debugText_->SetPos(50, 90);
 	debugText_->Printf("%f,%f,%f", 
@@ -66,32 +56,28 @@ void Enemy::Draw(ViewProjection viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	//球の描画
-	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
 }
 
 void Enemy::Approach()
 {
 	worldTransform_.translation_ += approach_;
 
-	//既定の位置に着いたら初期位置に戻す
-	if (worldTransform_.translation_.z <= -40.0f)
-	{
-		worldTransform_.translation_.z = 50.0f;
-	}
-
 	//既定の位置に着いたら離脱へ
-	/*if (worldTransform_.translation_.z <= 0.0f)
+	if (worldTransform_.translation_.z <= 10.0f)
 	{
 		phase_ = Phase::Leave;
-	}*/
+	}
 }
 
 void Enemy::Leave()
 {
 	worldTransform_.translation_ += leave_;
+
+	//既定の位置に着いたら接近へ
+	if (worldTransform_.translation_.z >= 80.0f)
+	{
+		phase_ = Phase::Approach;
+	}
 }
 
 void Enemy::Fire()
@@ -131,9 +117,10 @@ void Enemy::Fire()
 		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 		//球の登録
-		bullets_.push_back(std::move(newBullet));
+		/*bullets_.push_back(std::move(newBullet));*/
+		gameScene_->AddEnemyBullet(newBullet);
 
-		delayTimer = 10.0f;
+		delayTimer = 20.0f;
 	}
 }
 
@@ -152,7 +139,7 @@ Vector3 Enemy::GetWorldPosition() {
 
 void Enemy::OnCollision()
 {
-
+	isDead_ = true;
 }
 
 //半径を返す関数

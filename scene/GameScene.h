@@ -18,6 +18,8 @@
 #include "Enemy.h"
 #include "skydome.h"
 #include "RailCamera.h"
+#include "EnemyBullet.h"
+#include <sstream>
 
 /// <summary>
 /// ゲームシーン
@@ -25,21 +27,6 @@
 class GameScene {
 
 public:
-	//パーツID
-	enum PartId
-	{
-		kRoot,  //大元
-		kSpine,	//脊椎
-		kChest,	//胸
-		kHead,	//頭
-		kArmL,	//左腕
-		kArmR,	//右腕
-		kHip,	//尻
-		kLegL,	//左足
-		kLegR,	//右足
-
-		kNumPartId
-	};
 
   public: // メンバ関数
 	/// <summary>
@@ -70,6 +57,24 @@ public:
 	//すべての子分の当たり判定をチェックする関数
 	void CheckAllCollisions();
 
+	//敵弾を追加する
+	void AddEnemyBullet(std::unique_ptr<EnemyBullet>&enemyBullet);
+
+	//弾リスト
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+
+	//敵弾の更新
+	void EnemyBulletUpdate();
+
+	/// 敵発生
+	void EnemyOcurrence(const Vector3& v);
+
+	//敵発生データの読み込み
+	void LoadEnemyPopData();
+
+	//敵発生コマンドの更新
+	void UpdateEnemyPopCommands();
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -89,6 +94,24 @@ public:
 
 	//敵キャラ
 	Enemy* enemy_ = nullptr;
+
+	//敵弾
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+
+	//敵
+	std::list<std::unique_ptr<Enemy>> enemys_;
+
+	//敵の打ち出すまでの時間
+	float enemyDalayTimer = 0.0f;
+
+	bool isWait_ = false;
+
+	int waitTimer = 300;
+
+	//敵発生コマンド
+	std::stringstream enemyPopCommands;
+
+	GameScene* gameScene_ = nullptr;
 
 	//天球
 	skydome* skydome_ = nullptr;
