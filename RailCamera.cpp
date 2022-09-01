@@ -29,21 +29,21 @@ void RailCamera::Update()
 
 #pragma region 移動処理
 	if (input_->PushKey(DIK_A)) {
-		move.x -= kCharaSpeed;
+		move.x = -kCharaSpeed;
 	}
 	if (input_->PushKey(DIK_D)) {
-		move.x += kCharaSpeed;
+		move.x = kCharaSpeed;
 	}
 	if (input_->PushKey(DIK_W)) {
-		move.y += kCharaSpeed;
+		move.y = kCharaSpeed;
 	}
 	if (input_->PushKey(DIK_S)) {
-		move.y -= kCharaSpeed;
+		move.y = -kCharaSpeed;
 	}
 
 	//移動限界座標
-	const float kMoveLimitX = 36.0f;
-	const float kMoveLimitY = 20.0f;
+	const float kMoveLimitX = 3.0f;
+	const float kMoveLimitY = 3.0f;
 
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
@@ -92,7 +92,7 @@ void RailCamera::Update()
 	Vector3 forward(0, 0, 1);
 
 	//レールカメラの回転を反映
-	forward = affin::matVector(forward, worldTransform_.matWorld_);
+	forward = affin::MatVector(forward, worldTransform_.matWorld_);
 
 	//視点から前方に適当に進んだ位置が注視点
 	viewProjection_.target = viewProjection_.eye + forward;
@@ -100,7 +100,7 @@ void RailCamera::Update()
 	//上方ベクトル
 	Vector3 up(0, 1, 0);
 	//
-	viewProjection_.up = affin::matVector(up, worldTransform_.matWorld_);
+	viewProjection_.up = affin::MatVector(up, worldTransform_.matWorld_);
 
 	//ビュープロジェクションの更新と行列バッファへの転送
 	viewProjection_.UpdateMatrix();

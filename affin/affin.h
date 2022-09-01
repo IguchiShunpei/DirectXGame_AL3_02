@@ -3,7 +3,10 @@
 #include "Matrix4.h"
 #include "WorldTransform.h"
 #include "math.h"
+#include "cmath"
+#include "Vector4.h"
 #include "MathUtility.h"
+#include "WinApp.h"
 
 namespace affin {
 
@@ -45,5 +48,17 @@ namespace affin {
 	//(2) ÉèÅ[ÉãÉhçsóÒÇê∂ê¨Ç∑ÇÈä÷êî
 	void setTransformationWolrdMat(AffinMat& affinMat, WorldTransform& worldTransform);
 
-	Vector3 matVector(Vector3 v, Matrix4 mat);
+	Vector3 MatVector(Vector3 v, Matrix4 mat);
+
+	//ê≥ãKâªä÷êî
+	Vector3 Normalize(Vector3& v);
+
+	Vector3 GetWorldPosition(Matrix4 mat);
+
+	const Vector3 AddVector3(const Vector3& v1, const Vector3& v2);
+
+	const Vector3 Division(const Vector3& v, Matrix4 mat);
+
+	Matrix4 SetViewport(WorldTransform& worldTransform, WinApp* window, const Vector3& v);
+
 }

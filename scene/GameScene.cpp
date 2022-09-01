@@ -80,7 +80,7 @@ void GameScene::Update()
 		});
 
 	//自キャラの更新
-	player_->Update();
+	player_->Update(railCamera_->GetViewProjection());
 
 	//レールカメラの更新
 	railCamera_->Update();
@@ -178,6 +178,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	player_->DrawUI();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);

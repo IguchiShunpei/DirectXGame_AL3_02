@@ -11,6 +11,7 @@
 #include "PlayerBullet.h"
 #include<memory>
 #include<list>
+#include "WinApp.h"
 
 //自キャラ
 class Player
@@ -21,7 +22,7 @@ public:
 	void Initialize(Model* model,uint32_t textureHandle);
 
 	//更新
-	void Update();
+	void Update(const ViewProjection& viewProjection);
 
 	//移動
 	void Move();
@@ -34,6 +35,8 @@ public:
 
 	//描画
 	void Draw(ViewProjection viewProjection_);
+
+	void DrawUI();
 
 	//キャラの向きに応じた方向に球を出す
 	Vector3 bVelocity(Vector3& velocity, WorldTransform& worldTransform);
@@ -57,21 +60,36 @@ private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 
+	//3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
+
 	//モデル
 	Model* model_ = nullptr;
+
+	//インプット
+	Input* input_ = nullptr;
 
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
+	//2Dレティクル用スプライト
+	std::unique_ptr<Sprite> sprite2DReticle_;
+
 	//打ち出すまでの時間
 	float dalayTimer = 0.0f;
+
+	//Affin関数の構造体
+	affin::AffinMat affinMat;
 
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
-	Input* input_ = nullptr;
 	DebugText* debugText_ = nullptr;
+	WinApp* winApp_ = nullptr;
 
 	//半径
 	float radius = 1.0f;
+
+	//色
+	Vector4 RED = { 1.0f, 0.0f, 0.0f, 1.0f };
 };

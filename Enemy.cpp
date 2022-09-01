@@ -85,7 +85,7 @@ void Enemy::Fire()
 	delayTimer -= 0.1f;
 
 	//‹…‚Ì‘¬“x
-	const float kBulletSpeed = 0.5f;
+	const float kBulletSpeed = 0.2f;
 
 	//Ž©‹@‘_‚¢’e
 	assert(player_);
