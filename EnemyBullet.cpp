@@ -8,7 +8,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	//
 	model_ = model;
 	//テクスチャハンドルの読み込み
-	textureHandle_ = TextureManager::Load("mera.jpg");
+	textureHandle_ = TextureManager::Load("enemyBullet.png");
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();

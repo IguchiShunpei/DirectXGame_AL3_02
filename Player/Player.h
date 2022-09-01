@@ -66,6 +66,7 @@ private:
 	//モデル
 	Model* model_ = nullptr;
 
+	Model* modelBullet_ = nullptr;
 	//インプット
 	Input* input_ = nullptr;
 
@@ -76,7 +77,7 @@ private:
 	std::unique_ptr<Sprite> sprite2DReticle_;
 
 	//打ち出すまでの時間
-	float dalayTimer = 0.0f;
+	float dalayTimer = 0.5f;
 
 	//Affin関数の構造体
 	affin::AffinMat affinMat;
@@ -89,7 +90,4 @@ private:
 
 	//半径
 	float radius = 1.0f;
-
-	//色
-	Vector4 RED = { 1.0f, 0.0f, 0.0f, 1.0f };
 };

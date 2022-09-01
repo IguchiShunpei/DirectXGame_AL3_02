@@ -37,9 +37,6 @@ void RailCamera::Update()
 	if (input_->PushKey(DIK_W)) {
 		move.y = kCharaSpeed;
 	}
-	if (input_->PushKey(DIK_S)) {
-		move.y = -kCharaSpeed;
-	}
 
 	//ˆÚ“®ŒÀŠEÀ•W
 	const float kMoveLimitX = 3.0f;
@@ -64,12 +61,12 @@ void RailCamera::Update()
 	Matrix4 matRotX;
 
 	//‰ñ“]ˆ—
-	if (input_->PushKey(DIK_Q)) {
+	/*if (input_->PushKey(DIK_Q)) {
 		worldTransform_.rotation_.x += kCharaRotX;
 	}
 	if (input_->PushKey(DIK_E)) {
 		worldTransform_.rotation_.x -= kCharaRotX;
-	}
+	}*/
 	//(-)2ƒÎ‚ð’´‚¦‚½‚ç‰ñ“]Šp‚ð0‚É–ß‚·ˆ—
 	if (worldTransform_.rotation_.x >= (M_PI * 2) || worldTransform_.rotation_.x <= -(M_PI * 2)) {
 		worldTransform_.rotation_.x = 0;
@@ -106,11 +103,11 @@ void RailCamera::Update()
 	viewProjection_.UpdateMatrix();
 	viewProjection_.TransferMatrix();
 
-	//eye‚Ì•\Ž¦
-	debugText_->SetPos(50, 110);
-	debugText_->Printf(
-		"%f,%f,%f", viewProjection_.eye.x, viewProjection_.eye.y,
-		viewProjection_.eye.z);
+	////eye‚Ì•\Ž¦
+	//debugText_->SetPos(50, 110);
+	//debugText_->Printf(
+	//	"%f,%f,%f", viewProjection_.eye.x, viewProjection_.eye.y,
+	//	viewProjection_.eye.z);
 
 }
 

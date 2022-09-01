@@ -21,7 +21,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position,const Vector
 
 	//引数として受け取ったデータをメンバ変数に記録する
 	model_ = model;
-	textureHandle_ = TextureManager::Load("black.png");
+	textureHandle_ = TextureManager::Load("bullet.png");
 
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
@@ -37,7 +37,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position,const Vector
 //更新処理
 void PlayerBullet::Update() {
 
-	MyFunc::UpdateWorldTransform(worldTransform_);
+	MyFunc::HorizontalProjection(worldTransform_, startSpeed, G, e, flame);
 
 	//座標を移動させる
 	worldTransform_.translation_ += velocity_;

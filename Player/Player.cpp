@@ -22,7 +22,9 @@ void Player::Initialize(Model* model, uint32_t textureHandle)
 
 	worldTransform_.rotation_ = {};
 
-	worldTransform_.translation_ = Vector3{ 0,0,0 };
+	worldTransform_.translation_ = Vector3{ 0,-15,0 };
+
+	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 
 	//3Dレールカメラののワールドトランスフォーム初期化
 	worldTransform3DReticle_.Initialize();
@@ -65,7 +67,7 @@ void Player::Update(const ViewProjection& viewProjection)
 	//自機のワールド座標から3Dレティクルのワールド座標を計算
 	{
 		//自機から3Dレティクルへの距離
-		const float kDistancePlayerTo3DReticle = 30.0f;
+		const float kDistancePlayerTo3DReticle = 15.0f;
 
 		//自機から3Dレティクルへのオフセット(Z+向き)
 		Vector3 offSet = {0,0,1.0f};
@@ -103,19 +105,20 @@ void Player::Update(const ViewProjection& viewProjection)
 		sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 	}
 
-	//自機の座標
-	debugText_->SetPos(50, 50);
-	debugText_->Printf("%f,%f,%f",
-		worldTransform_.translation_.x,
-		worldTransform_.translation_.y,
-		worldTransform_.translation_.z);
+	////自機の座標
+	//debugText_->SetPos(50, 50);
+	//debugText_->Printf("%f,%f,%f",
+	//	worldTransform_.translation_.x,
+	//	worldTransform_.translation_.y,
+	//	worldTransform_.translation_.z);
 
-	//自機の角度
-	debugText_->SetPos(50, 70);
-	debugText_->Printf("%f,%f,%f",
-		worldTransform_.rotation_.x,
-		worldTransform_.rotation_.y,
-		worldTransform_.rotation_.z);
+	////自機の角度
+	//debugText_->SetPos(50, 70);
+	//debugText_->Printf("%f,%f,%f",
+	//	worldTransform_.rotation_.x,
+	//	worldTransform_.rotation_.y,
+	//	worldTransform_.rotation_.z);
+
 }
 
 //移動
@@ -136,14 +139,14 @@ void Player::Move()
 		move.x = -kCharacterSpeed;
 	}
 
-	if (input_->PushKey(DIK_UP))
+	/*if (input_->PushKey(DIK_UP))
 	{
 		move.y = kCharacterSpeed;
 	}
 	else if (input_->PushKey(DIK_DOWN))
 	{
 		move.y = -kCharacterSpeed;
-	}
+	}*/
 
 	//移動限界座標
 	const float kMoveLimitX = 36.0f;
@@ -221,9 +224,6 @@ void Player::DrawUI()
 //弾の発射
 void Player::Attack() 
 {
-
-	if (input_->PushKey(DIK_SPACE)) {
-
 		dalayTimer -= 0.1f;
 
 		//自キャラの座標をコピー
@@ -248,15 +248,13 @@ void Player::Attack()
 			//球の生成
 			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 			//球の初期化
-			newBullet->Initialize(model_, position, velocity);
+			newBullet->Initialize(modelBullet_, position, velocity);
 
 			//球の登録
 			bullets_.push_back(std::move(newBullet));
 
 			dalayTimer = 1.0f;
 		}
-
-	}
 }
 
 Vector3 Player::bVelocity(Vector3& velocity, WorldTransform& worldTransform) 

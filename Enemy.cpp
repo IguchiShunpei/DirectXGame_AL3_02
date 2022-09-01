@@ -6,6 +6,8 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& v) {
 	model_ = model;
 	textureHandle_ = textureHandle;
 
+	modelEnemyBullet_ = Model::CreateFromOBJ("enemyBullet", true);
+
 	//input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -44,12 +46,12 @@ void Enemy::Update()
 	//弾を発射
 	Fire();
 
-	//デバックテキスト
-	debugText_->SetPos(50, 90);
-	debugText_->Printf("%f,%f,%f", 
-		worldTransform_.translation_.x, 
-		worldTransform_.translation_.y,
-		worldTransform_.translation_.z);
+	////デバックテキスト
+	//debugText_->SetPos(50, 90);
+	//debugText_->Printf("%f,%f,%f", 
+	//	worldTransform_.translation_.x, 
+	//	worldTransform_.translation_.y,
+	//	worldTransform_.translation_.z);
 }
 
 void Enemy::Draw(ViewProjection viewProjection)
@@ -63,7 +65,7 @@ void Enemy::Approach()
 	worldTransform_.translation_ += approach_;
 
 	//既定の位置に着いたら離脱へ
-	if (worldTransform_.translation_.z <= 10.0f)
+	if (worldTransform_.translation_.z <= 30.0f)
 	{
 		phase_ = Phase::Leave;
 	}
@@ -114,7 +116,7 @@ void Enemy::Fire()
 		//球の生成
 		std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 		//球の初期化
-		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+		newBullet->Initialize(modelEnemyBullet_, worldTransform_.translation_, velocity);
 
 		//球の登録
 		/*bullets_.push_back(std::move(newBullet));*/
@@ -147,3 +149,4 @@ float Enemy::GetRadius()
 {
 	return radius;
 }
+

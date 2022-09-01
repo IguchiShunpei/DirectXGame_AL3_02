@@ -10,6 +10,7 @@
 #include "EnemyBullet.h"
 #include "Player/Player.h"
 #include "MathUtility.h"
+
 using namespace MathUtility;
 
 //自機クラスの前方宣言
@@ -58,6 +59,8 @@ public:
 	//半径を返す関数
 	float GetRadius();
 
+	int GetEnemyCount();
+
 	//敵リスト
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() { return enemys_; }
 
@@ -71,6 +74,7 @@ private:
 
 	//モデル
 	Model* model_ = nullptr;
+	Model* modelEnemyBullet_ = nullptr;
 
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;

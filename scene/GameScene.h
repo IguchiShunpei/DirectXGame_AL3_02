@@ -81,13 +81,33 @@ public:
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	//サウンドデータハンドル
+	uint32_t soundDataHandle_ = 0;
+	uint32_t soundEffectHandle_ = 0;
+
+	//音声再生ハンドル
+	uint32_t sdHandle_ = 0;
+	uint32_t seHandle_ = 0;
+
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 	uint32_t enemyHandle_ = 0;
+	uint32_t title_ = 0;
+	uint32_t space_ = 0;
+	uint32_t gameover_ = 0;
+	uint32_t clear_ = 0;
+
+	////スプライト
+	Sprite* sTitle_ = nullptr;
+	Sprite* sSpace_ = nullptr;
+	Sprite* sGameover_ = nullptr;
+	Sprite* sClear_ = nullptr;
 
 	//3Dモデル
 	Model* model_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+	Model* modelPlayer_ = nullptr;
+	Model* modelEnemy_ = nullptr;
 
 	//自キャラ
 	Player* player_ = nullptr;
@@ -129,6 +149,15 @@ public:
 	bool isDebugCameraActive_ = false;
 
 	const float M_PI = 3.141592f;
+
+	//画面切り替え
+	int sceneNum = 0;
+
+	//自機の体力
+	int playerHp = 10;
+
+	//敵の数
+	int enemyCount = 10;
 
 	/// <summary>
 	/// ゲームシーン用

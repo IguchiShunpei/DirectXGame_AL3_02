@@ -16,6 +16,10 @@ GameScene::~GameScene()
 	delete enemy_;
 	delete skydome_;
 	delete modelSkydome_;
+	//delete sTitle_;
+	//delete sSpace_;
+	//delete sGameover_;
+	//delete sClear_;
 }
 
 void GameScene::Initialize() {
@@ -26,11 +30,30 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 
 	//ファイル名を指定してテクスチャを読みこむ
-	textureHandle_ = TextureManager::Load("mario.jpg");
-	enemyHandle_ = TextureManager::Load("texture.jpg");
+	textureHandle_ = TextureManager::Load("player.png");
+	enemyHandle_ = TextureManager::Load("black.png");
+	title_ = TextureManager::Load("title.png");
+	space_ = TextureManager::Load("space.png");
+	gameover_ = TextureManager::Load("gameover.png");
+	clear_ = TextureManager::Load("clear.png");
+
+	//スプライトの生成
+	sTitle_ = Sprite::Create(title_, { 0,0 });
+	sSpace_ = Sprite::Create(space_, { 0,0 });
+	sGameover_ = Sprite::Create(gameover_, { 0,0 });
+	sClear_ = Sprite::Create(clear_, { 0,0 });
+
 	//3Dモデルの生成
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
+
+	//サウンドデータの読み込み
+	soundDataHandle_ = audio_->LoadWave("titleBGM.wav");
+
+	//音声再生
+	sdHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
 	//レールカメラの生成
 	railCamera_ = new RailCamera();
@@ -40,7 +63,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	//自キャラの初期化
-	player_->Initialize(model_, textureHandle_);
+	player_->Initialize(modelPlayer_, textureHandle_);
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
@@ -72,35 +95,68 @@ void GameScene::Initialize() {
 
 void GameScene::Update()
 {
-
-	//デスフラグの立った敵を削除
-	enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
+	if (sceneNum == 0)
+	{
+		if (input_->TriggerKey(DIK_SPACE) == 1)
 		{
-			return enemy_->IsDead();
-		});
-
-	//自キャラの更新
-	player_->Update(railCamera_->GetViewProjection());
-
-	//レールカメラの更新
-	railCamera_->Update();
-
-	//更新コマンド
-	UpdateEnemyPopCommands();
-
-	//敵キャラの更新
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->SetGameScene(this);
-		enemy->Update();
+			sceneNum = 1;
+		}
 	}
 
-	//敵弾の更新
-	EnemyBulletUpdate();
+	if (sceneNum == 1 && enemyCount <= 0)
+	{
+		sceneNum = 2;
+	}
 
-	//天球の更新
-	skydome_->Update();
+	if (sceneNum == 1 && playerHp <= 0)
+	{
+		sceneNum = 3;
+	}
 
-	isDebugCameraActive_ = true;
+	if (sceneNum == 2 || sceneNum == 3)
+	{
+		if (input_->TriggerKey(DIK_SPACE) == 1)
+		{
+			sceneNum = 0;
+		}
+	}
+
+
+	if (sceneNum == 1)
+	{
+		//デスフラグの立った敵を削除
+		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
+			{
+				return enemy_->IsDead();
+			});
+
+		//自キャラの更新
+		player_->Update(railCamera_->GetViewProjection());
+
+		//レールカメラの更新
+		railCamera_->Update();
+
+		//更新コマンド
+		UpdateEnemyPopCommands();
+
+		//敵キャラの更新
+		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			enemy->SetGameScene(this);
+			enemy->Update();
+		}
+
+		//敵弾の更新
+		EnemyBulletUpdate();
+
+		//天球の更新
+		skydome_->Update();
+
+		debugText_->SetPos(50, 180);
+		debugText_->Printf("HP:%d", playerHp);
+
+	}
+
+	/*isDebugCameraActive_ = true;*/
 
 	if (isDebugCameraActive_)
 	{
@@ -114,6 +170,8 @@ void GameScene::Update()
 		viewProjection_.UpdateMatrix();
 		viewProjection_.TransferMatrix();
 	}
+
+
 
 	//当たり判定
 	CheckAllCollisions();
@@ -132,7 +190,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -147,20 +205,23 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//天球の描画
-	skydome_->Draw(railCamera_->GetViewProjection());
+	if (sceneNum == 1)
+	{
+		//天球の描画
+		skydome_->Draw(railCamera_->GetViewProjection());
 
-	//自キャラの描画
-	player_->Draw(railCamera_->GetViewProjection());
+		//自キャラの描画
+		player_->Draw(railCamera_->GetViewProjection());
 
-	//敵キャラの描画
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->Draw(railCamera_->GetViewProjection());
-	}
+		//敵キャラの描画
+		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			enemy->Draw(railCamera_->GetViewProjection());
+		}
 
-	//敵の弾の描画
-	for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
-		bullet->Draw(railCamera_->GetViewProjection());
+		//敵の弾の描画
+		for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
+			bullet->Draw(railCamera_->GetViewProjection());
+		}
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -178,8 +239,28 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	if (sceneNum == 0)
+	{
+		sSpace_->Draw();
+		sTitle_->Draw();
+	}
 
-	player_->DrawUI();
+	if (sceneNum == 2)
+	{
+		sSpace_->Draw();
+		sClear_->Draw();
+	}
+
+	if (sceneNum == 3)
+	{
+		sSpace_->Draw();
+		sGameover_->Draw();
+	}
+
+	if (sceneNum == 1)
+	{
+		player_->DrawUI();
+	}
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
@@ -228,6 +309,7 @@ void GameScene::CheckAllCollisions()
 			//コールバックを呼び出す
 			player_->OnCollision();
 			bullet->OnCollision();
+			playerHp--;
 		}
 	}
 
@@ -252,6 +334,7 @@ void GameScene::CheckAllCollisions()
 				//コールバックを呼び出す
 				enemy->OnCollision();
 				bullet->OnCollision();
+				enemyCount--;
 			}
 		}
 	}
@@ -285,7 +368,7 @@ void GameScene::CheckAllCollisions()
 #pragma endregion
 }
 
-void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet>&enemyBullet)
+void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet>& enemyBullet)
 {
 	bullets_.push_back(std::move(enemyBullet));
 }
@@ -304,7 +387,7 @@ void GameScene::EnemyOcurrence(const Vector3& v) {
 	//敵の生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵の初期化
-	newEnemy->Initialize(model_, enemyHandle_, Vector3(v.x, v.y, v.z));
+	newEnemy->Initialize(modelEnemy_, enemyHandle_, Vector3(v.x, v.y, v.z));
 	newEnemy->SetPlayer(player_);
 
 	//敵の登録
@@ -363,7 +446,7 @@ void GameScene::UpdateEnemyPopCommands()
 		if (word.find("POP") == 0)
 		{
 			//x座標
-			getline(line_stream,word,',');
+			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
 
 			//y座標
